@@ -18,7 +18,11 @@ def generate_key(password: str, salt: bytes) -> bytes:
     key = kdf.derive(password.encode())
     return key
 
-def encrypt_message(message: str, password: str) -> str:
+def encrypt_message() -> str:
+    # Solicitar al usuario un mensaje y una clave para cifrar
+    message = input("Ingrese el mensaje a cifrar: ")
+    password = input("Ingrese la clave para cifrar el mensaje: ")
+
     # Generar una salt y una clave derivada de la contraseña
     salt = os.urandom(16)
     key = generate_key(password, salt)
@@ -39,7 +43,10 @@ def encrypt_message(message: str, password: str) -> str:
     encoded_message = urlsafe_b64encode(salt + iv + encrypted_message).decode()
     return encoded_message
 
-def decrypt_message(encoded_message: str, password: str) -> str:
+def decrypt_message(encoded_message: str) -> str:
+    # Solicitar al usuario la clave para descifrar el mensaje
+    password = input("Ingrese la clave para descifrar el mensaje: ")
+
     # Decodificar el mensaje cifrado en base64
     encrypted_data = urlsafe_b64decode(encoded_message.encode())
 
@@ -63,13 +70,8 @@ def decrypt_message(encoded_message: str, password: str) -> str:
     return message.decode()
 
 # Ejemplo de uso
-password = "mi_contraseña_secreta"
-mensaje_original = "Hola, este es un mensaje secreto."
-
-# Cifrar el mensaje
-mensaje_cifrado = encrypt_message(mensaje_original, password)
+mensaje_cifrado = encrypt_message()
 print(f"Mensaje cifrado: {mensaje_cifrado}")
 
-# Descifrar el mensaje
-mensaje_descifrado = decrypt_message(mensaje_cifrado, password)
+mensaje_descifrado = decrypt_message(mensaje_cifrado)
 print(f"Mensaje descifrado: {mensaje_descifrado}")
