@@ -1,8 +1,7 @@
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives import hashes, padding
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import padding
 from base64 import urlsafe_b64encode, urlsafe_b64decode
 import os
 
@@ -20,10 +19,9 @@ def encrypt_message() -> str:
     message = input("Ingrese el mensaje a cifrar: ")
     password = input("Ingrese la clave para cifrar el mensaje: ")
 
-    salt = os.urandom(16)
+    salt, iv = os.urandom(16), os.urandom(16)
     key = generate_key(password, salt)
 
-    iv = os.urandom(16)
     cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
     encryptor = cipher.encryptor()
 
@@ -41,7 +39,6 @@ def decrypt_message(encoded_message: str) -> str:
         try:
             encrypted_data = urlsafe_b64decode(encoded_message.encode())
             salt, iv, encrypted_message = encrypted_data[:16], encrypted_data[16:32], encrypted_data[32:]
-
             key = generate_key(password, salt)
 
             cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
