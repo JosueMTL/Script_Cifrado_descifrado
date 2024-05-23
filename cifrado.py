@@ -1,3 +1,5 @@
+#INtegrantes: Josue Matailo, Mateo Galan, Andres Aucay 
+
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes, padding
@@ -56,7 +58,6 @@ def decrypt_message(encoded_message: str) -> str:
     print("Demasiados intentos fallidos. No se pudo descifrar el mensaje.")
     return None
 
-# Ejemplo de uso
 mensaje_cifrado = encrypt_message()
 print(f"Mensaje cifrado: {mensaje_cifrado}")
 
